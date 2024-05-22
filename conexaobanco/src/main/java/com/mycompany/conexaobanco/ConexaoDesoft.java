@@ -6,6 +6,7 @@ package com.mycompany.conexaobanco;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -190,6 +191,7 @@ public class ConexaoDesoft extends javax.swing.JFrame {
 
     private void btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActionPerformed
         btn.setText("Conectando...");
+        //jdbc:mysql://host:porta/nome_database;
         final String usuario = USER.getText();
         final String senha = PASSWORD.getText();
         final String url = URL.getText();
@@ -200,28 +202,37 @@ public class ConexaoDesoft extends javax.swing.JFrame {
             porta.setText("");
             schema.setText("");
             HOST.setText("");
-        } else if (db.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Insira um Banco de dados valido ou preencha os campos necessarios");
-            btn.setText("Conectar");
-            return;
+        } else {
+            if (db.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Sinto muito.. precisamos de um schema para nos conectarmos!!", "Banco de Dados nulo", JOptionPane.ERROR_MESSAGE);
+                btn.setText("Conectar");
+                return;
+            }
         }
-        if (url.isEmpty() && host.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Preencha um dos campos: Host ou URL completa");
-            btn.setText("Conectar");
-            return;
-        }
-
         Connection cnx = cnx(usuario, senha, url, db, port, host);
         if (cnx
                 != null) {
-
+            String db_name = db;
+            String portnum = port;
+            String username = usuario;
+            
+            if (db.isEmpty()) {
+                db_name = url.substring(url.lastIndexOf("/")+1);
+            }
+            if (port.isEmpty()) {
+                portnum = "3306";
+            }
+            if (usuario.isEmpty()) {
+                username = "root";
+            }
             btn.setText("Conectado");
 
             JOptionPane.showMessageDialog(this, "Conectado com sucesso..."
-                    + "\nBanco: " + db
-                    + "\nUsuario: " + usuario
-                    + "\nPorta: " + port
+                    + "\nBanco: " + db_name
+                    + "\nUsuario: " + username
+                    + "\nPorta: " + portnum
             );
+
         } else {
             btn.setText("Conectar");
             JOptionPane.showMessageDialog(null, "Algo deu errado!! verifique os campos corretamente");
@@ -262,7 +273,8 @@ public class ConexaoDesoft extends javax.swing.JFrame {
         } catch (SQLException ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null, "Erro ao se conectar ao banco de dados MySql"
-                    + "\nInsira um banco de dados valido!!!");
+                    + "\nInsira um banco de dados ou uma senha validos!!!"
+                    + "\n" + ex.getMessage());
         } finally {
             if (cnx != null) {
                 try {
