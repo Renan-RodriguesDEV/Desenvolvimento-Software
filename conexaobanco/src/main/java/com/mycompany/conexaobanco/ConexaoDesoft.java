@@ -40,8 +40,8 @@ public class ConexaoDesoft extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         btn = new javax.swing.JButton();
-        porta = new javax.swing.JTextField();
-        schema = new javax.swing.JTextField();
+        PORTA = new javax.swing.JTextField();
+        SCHEMA = new javax.swing.JTextField();
         USER = new javax.swing.JTextField();
         PASSWORD = new javax.swing.JTextField();
         URL = new javax.swing.JTextField();
@@ -84,14 +84,14 @@ public class ConexaoDesoft extends javax.swing.JFrame {
             }
         });
 
-        porta.setBackground(new java.awt.Color(0, 0, 0));
-        porta.setFont(new java.awt.Font("Fira Code Light", 0, 12)); // NOI18N
-        porta.setForeground(new java.awt.Color(255, 255, 255));
+        PORTA.setBackground(new java.awt.Color(0, 0, 0));
+        PORTA.setFont(new java.awt.Font("Fira Code Light", 0, 12)); // NOI18N
+        PORTA.setForeground(new java.awt.Color(255, 255, 255));
 
-        schema.setSize(90, 25);
-        schema.setBackground(new java.awt.Color(0, 0, 0));
-        schema.setFont(new java.awt.Font("Fira Code Light", 0, 12)); // NOI18N
-        schema.setForeground(new java.awt.Color(255, 255, 255));
+        SCHEMA.setSize(90, 25);
+        SCHEMA.setBackground(new java.awt.Color(0, 0, 0));
+        SCHEMA.setFont(new java.awt.Font("Fira Code Light", 0, 12)); // NOI18N
+        SCHEMA.setForeground(new java.awt.Color(255, 255, 255));
 
         USER.setSize(90, 25);
         USER.setBackground(new java.awt.Color(0, 0, 0));
@@ -137,11 +137,11 @@ public class ConexaoDesoft extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(USER, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE)
-                            .addComponent(porta, javax.swing.GroupLayout.Alignment.LEADING))
+                            .addComponent(PORTA, javax.swing.GroupLayout.Alignment.LEADING))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(PASSWORD, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE)
-                            .addComponent(schema)))
+                            .addComponent(SCHEMA)))
                     .addComponent(HOST)
                     .addComponent(URL)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -171,8 +171,8 @@ public class ConexaoDesoft extends javax.swing.JFrame {
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(porta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(schema, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(PORTA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(SCHEMA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
@@ -195,13 +195,20 @@ public class ConexaoDesoft extends javax.swing.JFrame {
         final String usuario = USER.getText();
         final String senha = PASSWORD.getText();
         final String url = URL.getText();
-        final String host = HOST.getText();
-        final String db = schema.getText();
-        final String port = porta.getText();
+        String host = HOST.getText();
+        String db = SCHEMA.getText();
+        String port = PORTA.getText();
+        /*if (!url.isEmpty() && (!db.isEmpty()||!host.isEmpty()) ) {
+            JOptionPane.showMessageDialog(null, "Preencha a URL ou os campos Schema e/ou Host, mas não ambos", "Escolha", JOptionPane.ERROR_MESSAGE);
+            btn.setText("Conectar");
+            return;
+        }*/
+
         if (!(url.isEmpty())) {
-            porta.setText("");
-            schema.setText("");
+            PORTA.setText("");
+            SCHEMA.setText("");
             HOST.setText("");
+            host = db = port = "";
         } else {
             if (db.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Sinto muito.. precisamos de um schema para nos conectarmos!!", "Banco de Dados nulo", JOptionPane.ERROR_MESSAGE);
@@ -215,9 +222,9 @@ public class ConexaoDesoft extends javax.swing.JFrame {
             String db_name = db;
             String portnum = port;
             String username = usuario;
-            
+
             if (db.isEmpty()) {
-                db_name = url.substring(url.lastIndexOf("/")+1);
+                db_name = url.substring(url.lastIndexOf("/") + 1);
             }
             if (port.isEmpty()) {
                 portnum = "3306";
@@ -328,6 +335,8 @@ public class ConexaoDesoft extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField HOST;
     private javax.swing.JTextField PASSWORD;
+    private javax.swing.JTextField PORTA;
+    private javax.swing.JTextField SCHEMA;
     private javax.swing.JTextField URL;
     private javax.swing.JTextField USER;
     private javax.swing.JButton btn;
@@ -337,7 +346,5 @@ public class ConexaoDesoft extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JTextField porta;
-    private javax.swing.JTextField schema;
     // End of variables declaration//GEN-END:variables
 }
